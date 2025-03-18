@@ -1,32 +1,43 @@
 body {
     font-family: 'Courier New', Courier, monospace;
-    background-color: #000;
-    color: #0f0;
+    background-color: #0000ff; /* Bright blue background */
+    color: #fff; /* White text */
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-#console {
-    width: 80%;
-    height: 70%;
-    background-color: #111;
+/* Terminal Wrapper */
+#terminal-wrapper {
+    width: 90%;
+    max-width: 800px;
+    height: 70vh;
+    background-color: #000080; /* Dark blue background (like old Windows terminals) */
+    border: 2px solid #fff; /* White border */
     padding: 10px;
-    border: 2px solid #0f0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Terminal Output */
+#terminal {
+    flex-grow: 1;
     overflow-y: auto;
-}
-
-#output {
     white-space: pre-wrap;
+    color: #fff; /* White text for the terminal output */
 }
 
+/* Input Field */
 #input {
-    width: 100%;
-    background-color: #000;
-    color: #0f0;
+    background-color: #000080; /* Dark blue background for the input area */
+    color: #fff; /* White text */
     border: none;
     outline: none;
     font-size: 1rem;
-    margin-top: 5px;
+    width: 100%;
+    padding: 5px;
 }
