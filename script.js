@@ -27,7 +27,7 @@ const displayStatus = () => {
 };
 
 const handleRun = (args) => {
-  if (args[0] === "disk") {
+  if (args[0] === "disk" && state.diskInserted === true) {
     if (state.psiLevel > 95) {
       log("Running Disk");
       log("File...... GGsMix.mp3");
@@ -36,29 +36,44 @@ const handleRun = (args) => {
       }, 1000);
       setTimeout(() => {
         log("PRESSURE AT MAX");
+      }, 2000);
+      setTimeout(() => {
         log("ERROR");
+      }, 2500);
+      setTimeout(() => {
         log("ERROR");
+      }, 3000);
+      setTimeout(() => {
         log("ERROR");
+      }, 3500);
+      setTimeout(() => {
         log("ERROR");
+      }, 4000);
+      setTimeout(() => {
         log("ERROR");
+      }, 4500);
+      setTimeout(() => {
         log("ERROR");
+      }, 5000);
+      setTimeout(() => {
         log("ERROR");
+      }, 5500);
+      setTimeout(() => {
         log("ERROR");
-        log("ERROR");
-        log("ERROR");
-        log("ERROR");
-        log("ERROR");
-        log("ERROR");
-        log("ERROR");
-        log("ERROR");
-      }, 1000);
+      }, 6000);
       setTimeout (() => {
         log("⚠️ CRITICAL POWER ERROR: FAIL SAFE ENABLED - ACTION CANCELLED! Reroute Excess Power");
-      }, 3000);
+      }, 7000);
     } else {
       log("Running disk...");
       log("⚠️ WARNING: POWER AT CRITICAL MASS");
-      setTimeout(() => log("File...... GGsMix.mp3"), 2000);
+      setTimeout(() => log("File...... GGsMix.mp3"), 1000);
+      setTimeout(() => {
+        log("Initializing");
+      }, 2000);
+      setTimeout(() => {
+        log("Playing GGsMix.MP3");
+      }, 3000);
     }
   } else {
     log("Invalid /run command. Example: run disk");
@@ -75,6 +90,7 @@ const handleRead = (args) => {
         setTimeout(() => log("GGsMix.mp3"), 4000);
         state.pressureLevel = "Critical";
         state.psiLevel = 101;
+        state.diskInserted = true
       }, 2000);
       break;
     case "sys.log":
