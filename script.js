@@ -11,7 +11,7 @@ let state = {
   diskInserted: false,
   trayInserted: true,
   fileName: "ggsmix.mp3",
-  powerRerouted: false,
+  powerRerouted: true,
 };
 
 const log = (message) => {
@@ -31,7 +31,7 @@ const handleRun = (args) => {
     if (state.psiLevel > 95) {
       log("Running Disk");
       log("File...... GGsMix.mp3");
-      log("⚠️ ERROR: FAIL SAFE ENABLE ACTION CANCELLED! Reroute Excess Power");
+      log("⚠️ ERROR: FAIL SAFE ENABLED - ACTION CANCELLED! Reroute Excess Power");
     } else {
       log("Running disk...");
       log("⚠️ WARNING: POWER AT CRITICAL MASS");
@@ -146,6 +146,7 @@ const handleReroute = (args) => {
       return;
     }
     state.powerRerouted = true;
+    setTimeout(displayStatus, 1000);
   }
 };
 
