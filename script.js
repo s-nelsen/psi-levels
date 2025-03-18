@@ -31,7 +31,30 @@ const handleRun = (args) => {
     if (state.psiLevel > 95) {
       log("Running Disk");
       log("File...... GGsMix.mp3");
-      log("⚠️ ERROR: FAIL SAFE ENABLED - ACTION CANCELLED! Reroute Excess Power");
+      setTimeout(() => {
+        log("POWER LEVEL RAISING");
+      }, 1000);
+      setTimeout(() => {
+        log("PRESSURE AT MAX");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+        log("ERROR");
+      }, 1000);
+      setTimeout (() => {
+        log("⚠️ CRITICAL POWER ERROR: FAIL SAFE ENABLED - ACTION CANCELLED! Reroute Excess Power");
+      }, 3000
     } else {
       log("Running disk...");
       log("⚠️ WARNING: POWER AT CRITICAL MASS");
