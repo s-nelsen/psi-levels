@@ -1,184 +1,197 @@
-const terminal = document.getElementById("terminal")
-const input = document.getElementById("input")
+const terminal = document.getElementById("terminal");
+const input = document.getElementById("input");
 
-let psiLevel = 90
-let volumeLevel = 50 // Default to 50
-let pressureLevel = "Stable"
-let convergenceActive = true
-let adminLocked = true
-let diskInserted = false
-let fileName = "ggsmix.mp3"
-let excessPowerRerouted = false
+let state = {
+  psiLevel: 97,
+  volumeLevel: "Medium",
+  pressureLevel: "Stable",
+  location: "Gym",
+  convergenceActive: true,
+  adminLocked: true,
+  diskInserted: false,
+  trayInserted: true,
+  fileName: "ggsmix.mp3",
+  powerRerouted: false,
+};
 
 const log = (message) => {
-  terminal.innerText += `${message}\n`
-  terminal.scrollTop = terminal.scrollHeight
-}
+  terminal.innerText += `${message}\n`;
+  terminal.scrollTop = terminal.scrollHeight;
+};
 
 const displayStatus = () => {
-  log(`Running Convergence.exe [ACTIVE]...`)
-  log(`Psi Output: ${psiLevel}%`)
-  log(`Pressure Level: ${pressureLevel}`)
-  log(`Volume: ${volumeLevel}\n`)
-}
-
-const fakeDiskProcessing = () => {
-  log("Reading disk...")
-  setTimeout(() => {
-    log("Processing disk...")
-    
-    setTimeout(() => {
-      log("Disk data transfer complete.")
-      log("⚠️ WARNING: Unfamiliar File Type")
-      log("⚠️ WARNING: System instability likely.")
-      //log(`${fileName} detected.`)
-    }, 2000) // Simulate 2 seconds of disk processing
-  }, 3000) // Simulate 3 seconds of disk reading time
-}
+  log(`Running Convergence.exe [ACTIVE]...`);
+  log(`Psi Output: ${state.psiLevel}%`);
+  log(`Pressure Level: ${state.pressureLevel}`);
+  log(`Volume: ${state.volumeLevel}\n`);
+};
 
 const handleRun = (args) => {
   if (args[0] === "disk") {
-    if (!excessPowerRerouted) {
-      log("⚠️ Power levels too high. Excess power must be rerouted before running the disk.")
-      return
-    }
-
-    log("Running disk...")
-		fakeDiskProcessing()
-    // Simulate logs after running the disk
-    log("⚠️ WARNING: Excess power rerouted. SYSTEM UNSTABLE.")
-    log("⚠️ WARNING: Psi levels nearing critical.")
-    log("⚠️ WARNING: Pressure may fluctuate.")
-    log("⚠️ WARNING: Disk operation completed.")
-     // Fake disk processing after the disk run command
-  } else {
-    log("Invalid run command.")
-  }
-}
-
-const handleDisk = (args) => {
-  if (args[0] === "eject") {
-    diskInserted = true
-    log("Tray ejected. Insert disk")
-  } else if (args[0] === "read") {
-    if (diskInserted) {
-      fakeDiskProcessing()
-      setTimeout(() => {
-      //log("Disk data transfer complete.")
-      log(" ")
-      log(" ")
-      log(`${fileName} detected.`)
-    }, 9000)
-      //setTimeout(9000, log(`${fileName} detected.`))
-     
-      //log(`${fileName} detected.`)
-       // Fake disk processing after reading the disk
+    if (state.psiLevel > 95) {
+    	log("Running Disk")
+      log("File...... GGsMix.mp3")
+      log("⚠️ ERROR: FAIL SAFE ENABLE ACTION CANCELLED! Reroute Excess Power");
     } else {
-      log("No disk inserted.")
+      log("Running disk...");
+      log("⚠️ WARNING: POWER AT CRITICAL MASS");
+      GetTimeout(() => log("File...... GGsMix.mp3"), 2000)
     }
   } else {
-    log("Invalid disk command.")
+    log("Invalid /run command.");
   }
-}
+};
 
-const handleRerouteExcess = (args) => {
-  if (!args[0]) {
-    log("Please input target classroom (room num) or 'all' for entire school:")
-    return
+const handleRead = (args) => {
+  switch (args[0]) {
+    case "disk":
+      log("Disk read initiated...");
+      setTimeout(() => {
+        log("Disk reading complete.");
+        log("Initializing file system...");
+        setTimeout(() => log("GGsMix.mp3"), 4000);
+        state.pressureLevel = "Critical";
+        state.psiLevel = 101;
+      }, 2000);
+      break;
+    case "sys.log":
+      log("-- SYS.LOG --");
+      log("Priming System...");
+      log("Running Convergence.exe...");
+      log(`Psi Output: ${state.psiLevel}%`);
+      log(`Pressure Level: ${state.pressureLevel}`);
+      log(`Volume Level: ${state.volumeLevel}`);
+      log(`Location: ${state.location}`);
+      log("File system initialized...");
+      log("Disk check complete...");
+      break;
+    case "power levels":
+      log(`Psi Output: ${state.psiLevel}%`);
+      log(`Pressure Level: ${state.pressureLevel}`);
+      log(`Volume Level: ${state.volumeLevel}`);
+      log(`Location: ${state.location}`);
+      break;
+    default:
+      log("Invalid /read command.");
   }
+};
 
-  const target = args[0].toLowerCase()
-
-  if (target === "all") {
-    log("⚠️ Excess power rerouted to entire school. SYSTEM UNSTABLE.")
-    excessPowerRerouted = true
-  } else if (
-    /^(101|102|103|104|105|106|107|108|109|110|111|201|202|203|204|205|206|207|208|209)$/.test(
-      target
-    )
-  ) {
-    log(`⚠️ Excess power rerouted to Classroom ${target}. Explosion risk increased.`)
-    excessPowerRerouted = true
+const handleRunShut = () => {
+  if (state.adminLocked) {
+    log("Admin login required for shutdown.");
   } else {
-    log("Invalid classroom number.")
-    return
+    log("System shutting down...");
+    setTimeout(() => log("Shutdown complete."), 2000);
   }
+};
 
-  log("Excess power rerouted.")
-}
+const handleTray = (args) => {
+  switch (args[0]) {
+    case "eject":
+      if (state.trayInserted) {
+        log("Ejecting tray...");
+        state.diskInserted = true;
+        log("Tray ejected.");
+      } else {
+        log("an error has occurred");
+      }
+      break;
+    case "read":
+      if (state.diskInserted) {
+        log("Reading disk...");
+        setTimeout(() => {
+          log("disk reading complete.");
+          log("Initializing file system...");
+        }, 2000);
+      } else {
+        log("No tray inserted.");
+      }
+      break;
+    default:
+      log("Invalid /tray command.");
+  }
+};
 
 const handleVolume = (args) => {
-  const volume = parseInt(args[0], 10)
-
-  if (isNaN(volume) || volume < 20 || volume > 100) {
-    if (volume < 20 && adminLocked) {
-      log("⚠️ Volume set below 20. Admin login required.")
-    } else {
-      log("Invalid volume. Please enter a value between 20 and 100.")
-    }
+  const volumeInput = parseInt(args[0], 10);
+  if (isNaN(volumeInput)) {
+    log("Invalid volume input.");
+  } else if (volumeInput < 20 && state.adminLocked) {
+    log("Admin login required for volume below 20.");
   } else {
-    if (volume < 20 && adminLocked) {
-      log("⚠️ Volume set below 20. Admin login required.")
-    } else {
-      volumeLevel = volume
-      log(`Volume set to ${volumeLevel}.`)
-    }
+    state.volumeLevel = volumeInput;
+    log(`Volume set to ${volumeInput}.`);
   }
-}
+};
 
-const handleHelp = (args) => {
-  if (!args[0]) {
-    log("Available commands: run, disk, reroute.excess, volume, read, eject, exit, help")
-  } else if (args[0] === "run") {
-    log("run disk - Run disk after rerouting excess power.")
-  } else if (args[0] === "disk") {
-    log("disk eject - Eject the disk tray.")
-    log("disk read - Read the disk inserted.")
-  } else if (args[0] === "reroute.excess") {
-    log("reroute.excess [classroom number or 'all'] - Reroute excess power to a classroom.")
-  } else if (args[0] === "volume") {
-    log("volume [value] - Set the volume level between 20 and 100.")
+const handleReroute = (args) => {
+  state.powerRerouted = false
+  if (state.powerRerouted) {
+    log("Power already rerouted.");
   } else {
-    log("Invalid help target.")
+    const validRooms = /^(101|102|103|104|105|106|107|108|109|110|111|201|202|203|204|205|206|207|208|209)$/;
+    if (args[0] === "all") {
+      log("⚠️ Rerouting power to entire school")
+      setTimeout(() => log("Power Rerouted, System is Sustaining"), 4000)
+      state.psiLevel = 96
+      state.pressure = "HIGH"
+      state.location = "Entire Building"
+    } else if (validRooms.test(args[0])) {
+      log(`⚠️ Rerouting power to Room ${args[0]}.`)
+      setTimeout(() => log("Power Rerouted, Systems Critical"), 4000)
+      state.psiLevel = 120
+      state.pressureLevel = "CRITICAL"
+      state.location = "Gym and Room "+args[0]
+    } 
+    else {
+      log("Invalid target.");
+      return;
+    }
+    state.powerRerouted = true;
+    //log("Power rerouted successfully.");
   }
-}
+};
 
 const handleCommand = (command) => {
-  const parts = command.split(" ")
-  const action = parts.shift().toLowerCase()
-
+  const [action, ...args] = command.split(" ");
   switch (action) {
     case "run":
-      handleRun(parts)
-      break
-    case "disk":
-      handleDisk(parts)
-      break
-    case "reroute.excess":
-      handleRerouteExcess(parts)
-      break
+      handleRun(args);
+      break;
+    case "tray":
+      handleTray(args);
+      break;
+    case "read":
+      handleRead(args);
+      break;
+    case "shutdown":
+      handleRunShut();
+      break;
     case "volume":
-      handleVolume(parts)
-      break
+      handleVolume(args);
+      break;
     case "help":
-      handleHelp(parts)
-      break
+      log("Available commands: run, tray, read, shutdown, help, volume, reroute");
+      break;
+    case "reroute":
+      handleReroute(args);
+      break;
     case "exit":
-      log("CONSOLE OFFLINE.")
-      input.disabled = true
-      break
+      log("CONSOLE OFFLINE.");
+      input.disabled = true;
+      break;
     default:
-      log("Invalid command.")
+      log("Invalid command.");
   }
-}
+};
 
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-    const command = input.value.trim()
-    handleCommand(command)
-    input.value = "" // Clear the input after handling
+    const command = input.value.trim();
+    if (command) handleCommand(command);
+    input.value = "";
   }
-})
+});
 
-log(">> SYSTEM CONSOLE ONLINE")
-setTimeout(displayStatus, 1000)
+log(">> SYSTEM CONSOLE ONLINE");
+setTimeout(displayStatus, 1000);
