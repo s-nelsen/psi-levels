@@ -29,16 +29,16 @@ const displayStatus = () => {
 const handleRun = (args) => {
   if (args[0] === "disk") {
     if (state.psiLevel > 95) {
-    	log("Running Disk")
-      log("File...... GGsMix.mp3")
+      log("Running Disk");
+      log("File...... GGsMix.mp3");
       log("⚠️ ERROR: FAIL SAFE ENABLE ACTION CANCELLED! Reroute Excess Power");
     } else {
       log("Running disk...");
       log("⚠️ WARNING: POWER AT CRITICAL MASS");
-      GetTimeout(() => log("File...... GGsMix.mp3"), 2000)
+      setTimeout(() => log("File...... GGsMix.mp3"), 2000);
     }
   } else {
-    log("Invalid /run command.");
+    log("Invalid /run command. Example: run disk");
   }
 };
 
@@ -72,7 +72,7 @@ const handleRead = (args) => {
       log(`Location: ${state.location}`);
       break;
     default:
-      log("Invalid /read command.");
+      log("Invalid /read command. Examples: read disk, read sys.log, read power levels");
   }
 };
 
@@ -93,14 +93,14 @@ const handleTray = (args) => {
         state.diskInserted = true;
         log("Tray ejected.");
       } else {
-        log("an error has occurred");
+        log("An error has occurred");
       }
       break;
     case "read":
       if (state.diskInserted) {
         log("Reading disk...");
         setTimeout(() => {
-          log("disk reading complete.");
+          log("Disk reading complete.");
           log("Initializing file system...");
         }, 2000);
       } else {
@@ -108,14 +108,14 @@ const handleTray = (args) => {
       }
       break;
     default:
-      log("Invalid /tray command.");
+      log("Invalid /tray command. Examples: tray eject, tray read");
   }
 };
 
 const handleVolume = (args) => {
   const volumeInput = parseInt(args[0], 10);
   if (isNaN(volumeInput)) {
-    log("Invalid volume input.");
+    log("Invalid volume input. Example: volume [number]");
   } else if (volumeInput < 20 && state.adminLocked) {
     log("Admin login required for volume below 20.");
   } else {
@@ -125,30 +125,27 @@ const handleVolume = (args) => {
 };
 
 const handleReroute = (args) => {
-  state.powerRerouted = false
   if (state.powerRerouted) {
     log("Power already rerouted.");
   } else {
     const validRooms = /^(101|102|103|104|105|106|107|108|109|110|111|201|202|203|204|205|206|207|208|209)$/;
     if (args[0] === "all") {
-      log("⚠️ Rerouting power to entire school")
-      setTimeout(() => log("Power Rerouted, System is Sustaining"), 4000)
-      state.psiLevel = 96
-      state.pressure = "HIGH"
-      state.location = "Entire Building"
+      log("⚠️ Rerouting power to entire school");
+      setTimeout(() => log("Power Rerouted, System is Sustaining"), 4000);
+      state.psiLevel = 96;
+      state.pressureLevel = "HIGH";
+      state.location = "Entire Building";
     } else if (validRooms.test(args[0])) {
-      log(`⚠️ Rerouting power to Room ${args[0]}.`)
-      setTimeout(() => log("Power Rerouted, Systems Critical"), 4000)
-      state.psiLevel = 120
-      state.pressureLevel = "CRITICAL"
-      state.location = "Gym and Room "+args[0]
-    } 
-    else {
-      log("Invalid target.");
+      log(`⚠️ Rerouting power to Room ${args[0]}.`);
+      setTimeout(() => log("Power Rerouted, Systems Critical"), 4000);
+      state.psiLevel = 120;
+      state.pressureLevel = "CRITICAL";
+      state.location = `Gym and Room ${args[0]}`;
+    } else {
+      log("Invalid target. Example: reroute [room number/all]");
       return;
     }
     state.powerRerouted = true;
-    //log("Power rerouted successfully.");
   }
 };
 
@@ -181,7 +178,7 @@ const handleCommand = (command) => {
       input.disabled = true;
       break;
     default:
-      log("Invalid command.");
+      log("Invalid command. Type 'help' for a list of available commands.");
   }
 };
 
