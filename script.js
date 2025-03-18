@@ -54,7 +54,7 @@ const handleRun = (args) => {
       }, 1000);
       setTimeout (() => {
         log("⚠️ CRITICAL POWER ERROR: FAIL SAFE ENABLED - ACTION CANCELLED! Reroute Excess Power");
-      }, 3000
+      }, 3000);
     } else {
       log("Running disk...");
       log("⚠️ WARNING: POWER AT CRITICAL MASS");
