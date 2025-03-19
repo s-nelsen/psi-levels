@@ -7,6 +7,7 @@ let state = {
   pressureLevel: "Stable",
   location: "Gym",
   convergenceActive: true,
+  activeProgram:"Convergence.exe",
   adminLocked: true,
   diskInserted: false,
   trayInserted: true,
@@ -21,7 +22,7 @@ const log = (message) => {
 
 const displayStatus = () => {
   log("-----------------------------------------")
-  log(`Running Convergence.exe [ACTIVE]...`);
+  log(`Running ${state.activeProgram} [ACTIVE]...`);
   log(`Psi Output: ${state.psiLevel}%`);
   log(`Pressure Level: ${state.pressureLevel}`);
   log(`Volume: ${state.volumeLevel}`);
@@ -56,9 +57,11 @@ const handleRun = (args) => {
       setTimeout(() => log("File...... GGsMix.mp3"), 1000);
       setTimeout(() => log("Initializing"), 2000);
       setTimeout(() => log("Playing GGsMix.MP3"), 3000);
+      state.activeProgram = "GGsMix.MP3";
+      setTimeout(displayStatus, 6000);
     }
   } else {
-    log("Invalid /run command. Example: run [filename]");
+    log("Invalid run command. Example: run [filename]");
   }
 };
 
@@ -76,10 +79,10 @@ const handleRead = (args) => {
         state.psiLevel = 101;
      } else { log("No Disk Inserted")}
       break;
-    case "sys.log":
+    case "log":
       log("-- SYS.LOG --");
       log("Priming System...");
-      log("Running Convergence.exe...");
+      log(`Running ${state.activeProgram}...`);
       log(`Psi Output: ${state.psiLevel}%`);
       log(`Pressure Level: ${state.pressureLevel}`);
       log(`Volume Level: ${state.volumeLevel}`);
@@ -87,14 +90,14 @@ const handleRead = (args) => {
       log("File system initialized...");
       log("Disk check complete...");
       break;
-    case "power levels":
-      log(`Psi Output: ${state.psiLevel}%`);
-      log(`Pressure Level: ${state.pressureLevel}`);
-      log(`Volume Level: ${state.volumeLevel}`);
-      log(`Location: ${state.location}`);
+    //case "power levels":
+      //log(`Psi Output: ${state.psiLevel}%`);
+      //log(`Pressure Level: ${state.pressureLevel}`);
+      //log(`Volume Level: ${state.volumeLevel}`);
+      //log(`Location: ${state.location}`);
       break;
     default:
-      log("Invalid /read command. Examples: read disk, read sys.log, read power levels");
+      log("Invalid read command. usage read[name] disk/log ");
   }
 };
 
@@ -133,7 +136,7 @@ const handleTray = (args) => {
       }
       break;
     default:
-      log("Invalid /tray command. Examples: tray eject, tray read");
+      log("Invalid tray command. Usage: tray[Open/Close]");
   }
 };
 
@@ -169,7 +172,7 @@ const handleReroute = (args) => {
       state.location = `Gym and Room ${args[0]}`;
       setTimeout(displayStatus, 1000);
     } else {
-      log("Invalid target. Example: reroute [room number/all]");
+      log("Invalid target. Usage: reroute [room/all]");
       return;
     }
     state.powerRerouted = true;
