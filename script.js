@@ -7,7 +7,7 @@ let state = {
   pressureLevel: "Stable",
   location: "Gym",
   convergenceActive: true,
-  activeProgram:"Convergence.exe",
+  activeProgram: "Convergence.exe",
   adminLocked: true,
   diskInserted: false,
   trayInserted: true,
@@ -21,13 +21,13 @@ const log = (message) => {
 };
 
 const displayStatus = () => {
-  log("-----------------------------------------")
+  log("-----------------------------------------");
   log(`Running ${state.activeProgram} [ACTIVE]...`);
   log(`Psi Output: ${state.psiLevel}%`);
   log(`Pressure Level: ${state.pressureLevel}`);
   log(`Volume: ${state.volumeLevel}`);
   log(`Power Sector: ${state.location}`);
-  log("-----------------------------------------")
+  log("-----------------------------------------");
 };
 
 const handleRun = (args) => {
@@ -50,7 +50,13 @@ const handleRun = (args) => {
       setTimeout(() => log("ERROR"), 5000);
       setTimeout(() => log("ERROR"), 5500);
       setTimeout(() => log("ERROR"), 6000);
-      setTimeout(() => log("⚠️ CRITICAL POWER ERROR: FAIL SAFE ENABLED - ACTION CANCELLED! Reroute Excess Power"), 7000);
+      setTimeout(
+        () =>
+          log(
+            "⚠️ CRITICAL POWER ERROR: FAIL SAFE ENABLED - ACTION CANCELLED! Reroute Excess Power"
+          ),
+        7000
+      );
     } else {
       log("Running disk...");
       log("⚠️ WARNING: POWER AT CRITICAL MASS");
@@ -77,7 +83,9 @@ const handleRead = (args) => {
         setTimeout(() => log("GGsMix.mp3"), 4000);
         state.pressureLevel = "Critical";
         state.psiLevel = 101;
-     } else { log("No Disk Inserted")}
+      } else {
+        log("No Disk Inserted");
+      }
       break;
     case "log":
       log("-- SYS.LOG --");
@@ -90,12 +98,12 @@ const handleRead = (args) => {
       log("File system initialized...");
       log("Disk check complete...");
       break;
-    //case "power levels":
-      //log(`Psi Output: ${state.psiLevel}%`);
-      //log(`Pressure Level: ${state.pressureLevel}`);
-      //log(`Volume Level: ${state.volumeLevel}`);
-      //log(`Location: ${state.location}`);
-      break;
+    // case "power levels":
+    // log(`Psi Output: ${state.psiLevel}%`);
+    // log(`Pressure Level: ${state.pressureLevel}`);
+    // log(`Volume Level: ${state.volumeLevel}`);
+    // log(`Location: ${state.location}`);
+    // break;
     default:
       log("Invalid read command. usage read[name] disk/log ");
   }
@@ -114,12 +122,11 @@ const handleTray = (args) => {
   switch (args[0]) {
     case "open":
       if (state.trayInserted) {
-        log("Ejecting tray...")
+        log("Ejecting tray...");
         setTimeout(() => log("Tray is open, insert Disk"), 4000);
         state.trayInserted = false;
-        
       } else {
-        log("tray is already ejected");
+        log("Tray is already ejected");
       }
       break;
     case "close":
@@ -127,8 +134,8 @@ const handleTray = (args) => {
         log("Closing Tray");
         setTimeout(() => log(" "), 4000);
         setTimeout(() => log("Disk Inserted"), 4000);
-        state.diskInserted = true
-        state.psiLevel = 102
+        state.diskInserted = true;
+        state.psiLevel = 102;
         state.pressureLevel = "Severe";
         setTimeout(displayStatus, 6000);
       } else {
