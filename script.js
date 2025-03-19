@@ -58,7 +58,7 @@ const handleRun = (args) => {
       setTimeout(() => log("Initializing"), 2000);
       setTimeout(() => log("Playing GGsMix.MP3"), 3000);
       state.activeProgram = "GGsMix.MP3";
-      setTimeout(displayStatus, 6000);
+      setTimeout(displayStatus, 4000);
     }
   } else {
     log("Invalid run command. Example: run [filename]");
