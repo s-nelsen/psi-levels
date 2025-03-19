@@ -170,20 +170,20 @@ const handleReroute = (args) => {
       state.psiLevel = 99;
       state.pressureLevel = "HIGH";
       state.location = "Entire Building";
-      setTimeout(displayStatus, 1000);
+     // setTimeout(displayStatus, 1000);
     } else if (validRooms.test(args[0])) {
       log(`⚠️ Rerouting power to Room ${args[0]}.`);
       setTimeout(() => log("Power Rerouted, Systems Critical"), 4000);
       state.psiLevel = 120;
       state.pressureLevel = "CRITICAL";
       state.location = `Gym and Room ${args[0]}`;
-      setTimeout(displayStatus, 1000);
+      //setTimeout(displayStatus, 1000);
     } else {
       log("Invalid target. Usage: reroute [room/all]");
       return;
     }
     state.powerRerouted = true;
-    setTimeout(displayStatus, 1000);
+    setTimeout(displayStatus, 5000);
   }
 };
 
