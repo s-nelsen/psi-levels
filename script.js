@@ -20,81 +20,61 @@ const log = (message) => {
 };
 
 const displayStatus = () => {
+  log("-----------------------------------------")
   log(`Running Convergence.exe [ACTIVE]...`);
   log(`Psi Output: ${state.psiLevel}%`);
   log(`Pressure Level: ${state.pressureLevel}`);
-  log(`Volume: ${state.volumeLevel}\n`);
+  log(`Volume: ${state.volumeLevel}`);
+  log(`Power Sector: ${state.location}`);
+  log("-----------------------------------------")
 };
 
 const handleRun = (args) => {
-  if (state.diskInserted){
-    if (args[0] === "disk") {
-      if (state.psiLevel > 95) {
-        log("Running Disk");
-        log("File...... GGsMix.mp3");
-        setTimeout(() => {
-          log("POWER LEVEL RAISING");
-        }, 1000);
-        setTimeout(() => {
-          log("PRESSURE AT MAX");
-        }, 2000);
-        setTimeout(() => {
-          log("ERROR");
-        }, 2500);
-        setTimeout(() => {
-          log("ERROR");
-        }, 3000);
-        setTimeout(() => {
-          log("ERROR");
-        }, 3500);
-        setTimeout(() => {
-          log("ERROR");
-        }, 4000);
-        setTimeout(() => {
-          log("ERROR");
-        }, 4500);
-        setTimeout(() => {
-          log("ERROR");
-        }, 5000);
-        setTimeout(() => {
-          log("ERROR");
-        }, 5500);
-        setTimeout(() => {
-          log("ERROR");
-        }, 6000);
-        setTimeout (() => {
-          log("⚠️ CRITICAL POWER ERROR: FAIL SAFE ENABLED - ACTION CANCELLED! Reroute Excess Power");
-        }, 7000);
-      } else {
-        log("Running disk...");
-        log("⚠️ WARNING: POWER AT CRITICAL MASS");
-        setTimeout(() => log("File...... GGsMix.mp3"), 1000);
-        setTimeout(() => {
-          log("Initializing");
-        }, 2000);
-        setTimeout(() => {
-          log("Playing GGsMix.MP3");
-        }, 3000);
-      }
-    } else {
-      log("Invalid /run command. Example: run disk");
+  if (!state.diskInserted) {
+    log("Please insert a disk");
+    return;
   }
-  } else{
-    log("Please insert a disk)
+
+  if (args[0] === "ggsmix.mp3" || args[0] === "disk") {
+    if (state.psiLevel > 100) {
+      log("Running Disk");
+      log("File...... GGsMix.mp3");
+      setTimeout(() => log("POWER LEVEL RAISING"), 1000);
+      setTimeout(() => log("PRESSURE AT MAX"), 2000);
+      setTimeout(() => log("ERROR"), 2500);
+      setTimeout(() => log("ERROR"), 3000);
+      setTimeout(() => log("ERROR"), 3500);
+      setTimeout(() => log("ERROR"), 4000);
+      setTimeout(() => log("ERROR"), 4500);
+      setTimeout(() => log("ERROR"), 5000);
+      setTimeout(() => log("ERROR"), 5500);
+      setTimeout(() => log("ERROR"), 6000);
+      setTimeout(() => log("⚠️ CRITICAL POWER ERROR: FAIL SAFE ENABLED - ACTION CANCELLED! Reroute Excess Power"), 7000);
+    } else {
+      log("Running disk...");
+      log("⚠️ WARNING: POWER AT CRITICAL MASS");
+      setTimeout(() => log("File...... GGsMix.mp3"), 1000);
+      setTimeout(() => log("Initializing"), 2000);
+      setTimeout(() => log("Playing GGsMix.MP3"), 3000);
+    }
+  } else {
+    log("Invalid /run command. Example: run [filename]");
+  }
 };
 
 const handleRead = (args) => {
   switch (args[0]) {
     case "disk":
-      log("Disk read initiated...");
-      setTimeout(() => {
-        log("Disk reading complete.");
-        log("Initializing file system...");
+      if (state.diskInserted) {
+        log("Reading disk...");
+        setTimeout(() => {
+          log("Disk reading complete.");
+          log("Initializing file system...");
+        }, 2000);
         setTimeout(() => log("GGsMix.mp3"), 4000);
         state.pressureLevel = "Critical";
         state.psiLevel = 101;
-        //state.diskInserted = true
-      }, 2000);
+     } else { log("No Disk Inserted")}
       break;
     case "sys.log":
       log("-- SYS.LOG --");
@@ -129,28 +109,31 @@ const handleRunShut = () => {
 
 const handleTray = (args) => {
   switch (args[0]) {
-    case "eject":
+    case "open":
       if (state.trayInserted) {
-        log("Ejecting tray...");
-        state.diskInserted = true;
-        log("Tray ejected.");
+        log("Ejecting tray...")
+        setTimeout(() => log("Tray is open, insert Disk"), 4000);
+        state.trayInserted = false;
+        
       } else {
-        log("An error has occurred");
+        log("tray is already ejected");
       }
       break;
-    case "read":
-      if (state.diskInserted) {
-        log("Reading disk...");
-        setTimeout(() => {
-          log("Disk reading complete.");
-          log("Initializing file system...");
-        }, 2000);
+    case "close":
+      if (!state.trayInserted) {
+        log("Closing Tray");
+        setTimeout(() => log(" "), 4000);
+        setTimeout(() => log("Disk Inserted"), 4000);
+        state.diskInserted = true
+        state.psiLevel = 102
+        state.pressureLevel = "Severe";
+        setTimeout(displayStatus, 6000);
       } else {
-        log("No disk inserted.");
+        log("Tray is not ejected");
       }
       break;
     default:
-      log("Invalid /tray command. Examples: tray eject);
+      log("Invalid /tray command. Examples: tray eject, tray read");
   }
 };
 
@@ -167,22 +150,24 @@ const handleVolume = (args) => {
 };
 
 const handleReroute = (args) => {
-  if (state.powerRerouted) {
+  if (!state.powerRerouted) {
     log("Power already rerouted.");
   } else {
     const validRooms = /^(101|102|103|104|105|106|107|108|109|110|111|201|202|203|204|205|206|207|208|209)$/;
     if (args[0] === "all") {
       log("⚠️ Rerouting power to entire school");
       setTimeout(() => log("Power Rerouted, System is Sustaining"), 4000);
-      state.psiLevel = 96;
+      state.psiLevel = 99;
       state.pressureLevel = "HIGH";
       state.location = "Entire Building";
+      setTimeout(displayStatus, 1000);
     } else if (validRooms.test(args[0])) {
       log(`⚠️ Rerouting power to Room ${args[0]}.`);
       setTimeout(() => log("Power Rerouted, Systems Critical"), 4000);
       state.psiLevel = 120;
       state.pressureLevel = "CRITICAL";
       state.location = `Gym and Room ${args[0]}`;
+      setTimeout(displayStatus, 1000);
     } else {
       log("Invalid target. Example: reroute [room number/all]");
       return;
