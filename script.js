@@ -62,7 +62,7 @@ const handleRun = (args) => {
       log("⚠️ WARNING: POWER AT CRITICAL MASS");
       setTimeout(() => log("File...... GGsMix.mp3"), 1000);
       setTimeout(() => log("Initializing"), 2000);
-      setTimeout(() => log("Playing GGsMix.MP3"), 3000);
+      setTimeout(() => log("Running GGsMix.MP3"), 3000);
       state.activeProgram = "GGsMix.MP3";
       setTimeout(displayStatus, 4000);
     }
@@ -143,7 +143,7 @@ const handleTray = (args) => {
       }
       break;
     default:
-      log("Invalid tray command. Usage: tray[Open/Close]");
+      log("Invalid tray command. Usage: tray[open/close]");
   }
 };
 
