@@ -222,7 +222,7 @@ const handleCommand = (command) => {
 
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-    const command = input.value.trim();
+    const command = input.value.trim().toLowerCase(); // Convert input to lowercase
     if (command) handleCommand(command);
     input.value = "";
   }
